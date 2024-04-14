@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using BrightBind.Server.Models;
+using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 
 namespace BrightBind.Server.Data
@@ -6,12 +7,15 @@ namespace BrightBind.Server.Data
     public class ApplicationUser : IdentityUser
     {
         public string? Nickname { get; set; }
+
+        public List<Book> Books { get; set; } = new List<Book>();
+        public List<Goal> Goals { get; set; } = new List<Goal>();
+    
     }
 
     public record CreateUserDto(
         string Email,
-    string Password,
-    string Nickname
-    //[Required]
-);
+        string Password,
+        string Nickname
+    );
 }
