@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 function Register() {
     // state variables for email and passwords
     const [email, setEmail] = useState("");
+    const [nickname, setNickname] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const navigate = useNavigate();
@@ -20,6 +21,7 @@ function Register() {
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         if (name === "email") setEmail(value);
+        if (name === "nickname") setNickname(value);
         if (name === "password") setPassword(value);
         if (name === "confirmPassword") setConfirmPassword(value);
     };
@@ -28,7 +30,7 @@ function Register() {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         // validate email and passwords
-        if (!email || !password || !confirmPassword) {
+        if (!email || !nickname || !password || !confirmPassword) {
             setError("Please fill in all fields.");
         } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
             setError("Please enter a valid email address.");
@@ -45,6 +47,7 @@ function Register() {
                 },
                 body: JSON.stringify({
                     email: email,
+                    nickname: nickname,
                     password: password,
                 }),
             })
@@ -79,6 +82,16 @@ function Register() {
                         id="email"
                         name="email"
                         value={email}
+                        onChange={handleChange}
+                    />
+                </div>
+                <div>
+                    <label htmlFor="nickname">Nick Name:</label> 
+                    <input
+                        type="text"
+                        id="nickname"
+                        name="nickname"
+                        value={nickname}
                         onChange={handleChange}
                     />
                 </div>

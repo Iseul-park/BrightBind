@@ -30,7 +30,7 @@ namespace BrightBind.Server
 
             app.UseDefaultFiles();
             app.UseStaticFiles();
-            app.MapIdentityApi<ApplicationUser>();
+            app.MapCustomIdentityApi<ApplicationUser>();
 
             app.MapPost("/logout", async (SignInManager<ApplicationUser> SignInManager) =>
             {
