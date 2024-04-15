@@ -13,5 +13,9 @@ namespace BrightBind.Server.Models
         public int? BookId { get; set; } // Naviagation
 
         public Book? Book { get; set; }
+
+        public string? UserId { get; set; } // Naviagation
+
+        public ApplicationUser? User { get; set; }
     }
 }
