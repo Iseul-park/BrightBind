@@ -15,12 +15,12 @@ namespace BrightBind.Server.Models
         public string? ImagePath { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
-        public bool isComplete { get; set; }
-        public bool isWishList { get; set; }
+        public bool IsComplete { get; set; }
+        public bool IsWishList { get; set; }
 
-        public string? UserId { get; set; } // Naviagation
+        public string UserId { get; set; } // Naviagation
 
-        public ApplicationUser? User { get; set; }
+        public ApplicationUser User { get; set; }
         //public string UserId { get; set; }
 
         // public DateTime CreateDate { get; set; }
@@ -28,7 +28,7 @@ namespace BrightBind.Server.Models
 
         // One to Many relationship
         // public ICollection<Review>? Reviews { get; set; }
-        public List<Review> reviews { get; set; } = new List<Review> { };
+        public List<Review> Reviews { get; set; } = new List<Review> { };
 
 
     }

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BrightBind.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240414215438_models")]
-    partial class models
+    [Migration("20240416010752_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -114,6 +114,12 @@ namespace BrightBind.Server.Migrations
                     b.Property<string>("ImagePath")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsComplete")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsWishList")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime?>("StartDate")
                         .HasColumnType("datetime2");
 
@@ -125,13 +131,8 @@ namespace BrightBind.Server.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<bool>("isComplete")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("isWishList")
-                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -152,6 +153,7 @@ namespace BrightBind.Server.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("YearlyGoal")
@@ -172,7 +174,7 @@ namespace BrightBind.Server.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("BookId")
+                    b.Property<int>("BookId")
                         .HasColumnType("int");
 
                     b.Property<string>("Comment")
@@ -333,7 +335,9 @@ namespace BrightBind.Server.Migrations
                 {
                     b.HasOne("BrightBind.Server.Data.ApplicationUser", "User")
                         .WithMany("Books")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
@@ -342,7 +346,9 @@ namespace BrightBind.Server.Migrations
                 {
                     b.HasOne("BrightBind.Server.Data.ApplicationUser", "User")
                         .WithMany("Goals")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
@@ -350,8 +356,10 @@ namespace BrightBind.Server.Migrations
             modelBuilder.Entity("BrightBind.Server.Models.Review", b =>
                 {
                     b.HasOne("BrightBind.Server.Models.Book", "Book")
-                        .WithMany("reviews")
-                        .HasForeignKey("BookId");
+                        .WithMany("Reviews")
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Book");
                 });
@@ -416,7 +424,7 @@ namespace BrightBind.Server.Migrations
 
             modelBuilder.Entity("BrightBind.Server.Models.Book", b =>
                 {
-                    b.Navigation("reviews");
+                    b.Navigation("Reviews");
                 });
 #pragma warning restore 612, 618
         }

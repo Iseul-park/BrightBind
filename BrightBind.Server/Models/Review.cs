@@ -10,12 +10,8 @@ namespace BrightBind.Server.Models
         public DateTime CreateDate { get; set; } = DateTime.Now;
         public DateTime UpdateDate { get; set; }
 
-        public int? BookId { get; set; } // Naviagation
+        public int BookId { get; set; } // Naviagation
 
-        public Book? Book { get; set; }
-
-        public string? UserId { get; set; } // Naviagation
-
-        public ApplicationUser? User { get; set; }
+        public Book Book { get; set; }
     }
 }

@@ -10,7 +10,6 @@ namespace BrightBind.Server.Data
 
         public List<Book> Books { get; set; } = new List<Book>();
         public List<Goal> Goals { get; set; } = new List<Goal>();
-        public List<Review> Reviews { get; set; } = new List<Review>();
 
     }
 

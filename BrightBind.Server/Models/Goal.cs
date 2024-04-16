@@ -8,9 +8,9 @@ namespace BrightBind.Server.Models
         public int YearlyGoal { get; set; }
         public int MonthlyGoal { get; set; }
 
-        public string? UserId { get; set; } // Naviagation
+        public string UserId { get; set; } // Naviagation
 
-        public ApplicationUser? User { get; set; }
+        public ApplicationUser User { get; set; }
 
     }
 }
