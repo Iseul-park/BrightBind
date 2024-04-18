@@ -1,5 +1,7 @@
 
 using BrightBind.Server.Data;
+using BrightBind.Server.Interfaces;
+using BrightBind.Server.Repository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
@@ -14,8 +16,8 @@ namespace BrightBind.Server
 
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-            
 
+            builder.Services.AddControllers();
             builder.Services.AddAuthorization();
             builder.Services.AddIdentityApiEndpoints<ApplicationUser>().
                 AddEntityFrameworkStores<ApplicationDbContext>();
@@ -26,6 +28,8 @@ namespace BrightBind.Server
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.Services.AddScoped<IBookRepository, BookRepository>();
 
             var app = builder.Build();
 
@@ -76,7 +80,6 @@ namespace BrightBind.Server
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 
