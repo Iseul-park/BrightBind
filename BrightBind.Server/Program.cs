@@ -30,6 +30,7 @@ namespace BrightBind.Server
             builder.Services.AddSwaggerGen();
 
             builder.Services.AddScoped<IBookRepository, BookRepository>();
+            builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
 
             var app = builder.Build();
 
