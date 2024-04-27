@@ -31,6 +31,7 @@ namespace BrightBind.Server
 
             builder.Services.AddScoped<IBookRepository, BookRepository>();
             builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
+            builder.Services.AddScoped<IGoalRepository, GoalRepository>();
 
             var app = builder.Build();
 
