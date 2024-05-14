@@ -83,6 +83,12 @@ namespace BrightBind.Server
 
             app.UseAuthorization();
 
+            app.UseCors(x => x
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .SetIsOriginAllowed(origin => true) // allow any origin
+                    .AllowCredentials());
+
             app.MapControllers();
 
             app.MapFallbackToFile("/index.html");
