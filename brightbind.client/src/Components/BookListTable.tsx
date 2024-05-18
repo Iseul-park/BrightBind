@@ -15,6 +15,7 @@ import ConfirmModal from "./ConfirmModal";
 type Book = {
   id: number;
   userId: string;
+  imagePath: string;
   title: string;
   author: string;
   brand: string;
@@ -46,6 +47,7 @@ const BookListTable = () => {
         const fetchedData: Book[] = data.map((item: Book) => ({
           id: item.id,
           userId: item.userId,
+          imagePath: item.imagePath,
           title: item.title,
           author: item.author,
           brand: item.brand,
@@ -57,10 +59,19 @@ const BookListTable = () => {
         const filteredData = fetchedData.filter((book) => book.userId === user?.id);
 
         const columns: MRT_ColumnDef<Book>[] = [
+          {
+            accessorKey: "imagePath",
+            enableSorting: false,
+            header: "",
+            size: 50,
+            Cell: ({ cell }) => (
+              <img src={cell.getValue<string>()} alt="Book image" style={{ width: "100px", height: "auto" }} />
+            ),
+          },
           { accessorKey: "title", header: "Title" },
-          { accessorKey: "author", header: "Author" },
+          { accessorKey: "author", header: "Author", size: 20 },
           { accessorKey: "brand", header: "Brand" },
-          { accessorKey: "totalPage", header: "Total Page", size: 30 },
+          { accessorKey: "totalPage", header: "Total Page", size: 20 },
           { accessorKey: "startDate", header: "Start Date", size: 50 },
           { accessorKey: "endDate", header: "End Date", size: 50 },
         ];
@@ -109,7 +120,7 @@ const BookListTable = () => {
     columns: useMemo(() => columns, [columns]),
     data: useMemo(() => bookData, [bookData]),
     enableRowActions: true,
-    positionActionsColumn: "last",
+    // positionActionsColumn: "last",
     displayColumnDefOptions: {
       "mrt-row-actions": {
         header: "Actions",
