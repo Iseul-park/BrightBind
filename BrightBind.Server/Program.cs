@@ -57,12 +57,14 @@ namespace BrightBind.Server
             app.MapGet("/pingauth", (ClaimsPrincipal user) =>
             {
                 var emailClaim = user.FindFirst(ClaimTypes.Email);
+                var idClaim = user.FindFirst(ClaimTypes.NameIdentifier);
 
-                if (emailClaim != null)
+                if (emailClaim != null && idClaim != null)
                 {
                     var email = emailClaim.Value;
+                    var id = idClaim.Value;
 
-                    return Results.Json(new { email }); // return as JSON
+                    return Results.Json(new { email, id }); // return as JSON
                 }
                 else
                 {
@@ -82,6 +84,12 @@ namespace BrightBind.Server
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
+
+            app.UseCors(x => x
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .SetIsOriginAllowed(origin => true) // allow any origin
+                    .AllowCredentials());
 
             app.MapControllers();
 
