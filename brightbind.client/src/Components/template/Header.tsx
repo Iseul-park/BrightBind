@@ -1,7 +1,6 @@
-﻿import { styled } from "@mui/material/styles";
+﻿import { styled, useTheme } from "@mui/material/styles";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 
@@ -15,7 +14,6 @@ interface AppBarProps extends MuiAppBarProps {
   drawerWidth: number;
 }
 const AppBar = styled(MuiAppBar, {
-  //  styled 함수는 두 개의 인수를 받음. 첫 번째 인수는 스타일이 적용될 컴포넌트이고, 두 번째 인수는 스타일을 정의하는데 사용
   // shouldForwardProp: Configure which props should be forwarded on DOM
   shouldForwardProp: (prop) => prop !== "open" && prop !== "drawerWidth",
   // We are specifying here how the styleOverrides are being applied based on props
@@ -25,12 +23,12 @@ const AppBar = styled(MuiAppBar, {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
-  backgroundColor: theme.palette.primary.light,
+  backgroundColor: "white",
   boxShadow: "none",
-  borderBottom: "1px solid #ccc",
+  borderBottom: `1px solid ${theme.palette.primary.main}`,
   ...(open && {
     marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`, // 사이드바가 열린 상태에서 AppBar의 너비를 사이드바의 너비를 제외한 값으로 설정
+    width: `calc(100% - ${drawerWidth}px)`,
     transition: theme.transitions.create(["width", "margin"], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
@@ -39,6 +37,7 @@ const AppBar = styled(MuiAppBar, {
 }));
 
 export default function Header({ drawerWidth, drawerOpen, onClick }: HeaderProps) {
+  const theme = useTheme();
   const handleDrawerOpen = () => {
     onClick();
   };
@@ -53,14 +52,13 @@ export default function Header({ drawerWidth, drawerOpen, onClick }: HeaderProps
           edge="start"
           sx={{
             marginRight: 5,
+            color: theme.palette.primary.main,
             ...(drawerOpen && { display: "none" }),
           }}
         >
           <MenuIcon />
         </IconButton>
-        <Typography variant="h6" noWrap component="div" sx={{}}>
-          Bright Bind
-        </Typography>
+        <img src="../../public/logo.png" alt="Logo" style={{ height: "43px", marginLeft: "5px" }} />
       </Toolbar>
     </AppBar>
   );

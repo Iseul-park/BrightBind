@@ -9,7 +9,7 @@ import AuthorizeView from "../Components/AuthorizeView.tsx";
 export default function Template() {
   // it returns entire layout of the page, containing side bar and app bar
   const [open, setOpen] = React.useState(true);
-  const drawerWidth = 240;
+  const drawerWidth = 200;
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -25,7 +25,7 @@ export default function Template() {
         <CssBaseline />
         <Header drawerWidth={drawerWidth} drawerOpen={open} onClick={handleDrawerOpen} />
         <MySideBar drawerWidth={drawerWidth} open={open} onClose={handleDrawerClose} />
-        <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+        <Box sx={{ pt: 8, bgcolor: "#fbe9e7" }}>
           {/* <DrawerHeader /> */}
           <Outlet />
         </Box>
