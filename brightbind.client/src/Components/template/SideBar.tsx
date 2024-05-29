@@ -12,6 +12,8 @@ import ReviewsIcon from "@mui/icons-material/Reviews";
 import EventNoteIcon from "@mui/icons-material/EventNote";
 import { useState } from "react";
 import DrawerHandler from "./DrawerHandler";
+import { Box, Divider } from "@mui/material";
+import LogoutButton from "./LogoutButton.tsx";
 
 const drawerWidth = 210;
 const headerHeight = 60;
@@ -76,7 +78,7 @@ export default function SideBar() {
   ];
 
   return (
-    <Drawer variant="permanent" open={open} theme={theme}>
+    <Drawer sx={{ display: "flex" }} variant="permanent" open={open} theme={theme}>
       <List>
         {items.map((item) => (
           <ListItem key={item.text} disablePadding sx={{ display: "block" }}>
@@ -114,6 +116,10 @@ export default function SideBar() {
         ))}
       </List>
       <DrawerHandler open={open} onClick={handleDrawerToggle} />
+      <Box mt="10">
+        <Divider />
+        <LogoutButton open={open} />
+      </Box>
     </Drawer>
   );
 }
