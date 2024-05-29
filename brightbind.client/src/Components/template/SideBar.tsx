@@ -2,9 +2,6 @@ import { useNavigate } from "react-router-dom";
 import { styled, useTheme, Theme, CSSObject } from "@mui/material/styles";
 import MuiDrawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
-import IconButton from "@mui/material/IconButton";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
@@ -13,13 +10,14 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 import ReviewsIcon from "@mui/icons-material/Reviews";
 import EventNoteIcon from "@mui/icons-material/EventNote";
+import { useState } from "react";
+import DrawerHandler from "./DrawerHandler";
 
-interface SideBarProps {
-  drawerWidth: number;
-  open: boolean;
-  onClose: () => void;
-}
-const openedMixin = (theme: Theme, drawerWidth: number): CSSObject => ({
+const drawerWidth = 210;
+const headerHeight = 60;
+
+const openedMixin = (theme: Theme): CSSObject => ({
+  marginTop: headerHeight,
   width: drawerWidth,
   transition: theme.transitions.create("width", {
     easing: theme.transitions.easing.sharp,
@@ -31,38 +29,29 @@ const openedMixin = (theme: Theme, drawerWidth: number): CSSObject => ({
 
 const closedMixin = (theme: Theme): CSSObject => ({
   // handle the style of the side bar whtn it's closed
-  border: "none",
+  marginTop: headerHeight,
   transition: theme.transitions.create("width", {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
   overflowX: "hidden",
+  borderRight: `1px solid ${theme.palette.primary.main}`,
   width: `calc(${theme.spacing(7)} + 1px)`,
   [theme.breakpoints.up("sm")]: {
     width: `calc(${theme.spacing(8)} + 1px)`, //8px
   },
-  borderRight: `1px solid ${theme.palette.primary.main}`,
 });
 
-const DrawerHeader = styled("div")(({ theme }) => ({
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "flex-end",
-  padding: theme.spacing(0, 1),
-  borderRight: "none",
-  // necessary for content to be below app bar
-  ...theme.mixins.toolbar,
-}));
-
-const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== "open" && prop !== "drawerWidth" })(
-  ({ theme, open, drawerWidth }: { theme: Theme; open: boolean; drawerWidth: number }) => ({
+const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== "open" })(
+  ({ theme, open }: { theme: Theme; open: boolean }) => ({
     width: drawerWidth,
     flexShrink: 0,
     whiteSpace: "nowrap",
     boxSizing: "border-box",
+    borderRight: `1px solid ${theme.palette.primary.main}`,
     ...(open && {
-      ...openedMixin(theme, drawerWidth),
-      "& .MuiDrawer-paper": openedMixin(theme, drawerWidth),
+      ...openedMixin(theme),
+      "& .MuiDrawer-paper": openedMixin(theme),
     }),
     ...(!open && {
       ...closedMixin(theme),
@@ -71,11 +60,12 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== "open" 
   })
 );
 
-export default function SideBar({ drawerWidth, open, onClose }: SideBarProps) {
+export default function SideBar() {
   const theme = useTheme();
   const navigate = useNavigate();
-  const handleDrawerClose = () => {
-    onClose();
+  const [open, setOpen] = useState(true);
+  const handleDrawerToggle = () => {
+    setOpen(!open);
   };
 
   const items = [
@@ -86,13 +76,7 @@ export default function SideBar({ drawerWidth, open, onClose }: SideBarProps) {
   ];
 
   return (
-    <Drawer variant="permanent" drawerWidth={drawerWidth} open={open} theme={theme}>
-      <DrawerHeader>
-        <IconButton onClick={handleDrawerClose}>
-          {theme.direction === "rtl" ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-        </IconButton>
-      </DrawerHeader>
-      {/* <Divider /> */}
+    <Drawer variant="permanent" open={open} theme={theme}>
       <List>
         {items.map((item) => (
           <ListItem key={item.text} disablePadding sx={{ display: "block" }}>
@@ -129,6 +113,7 @@ export default function SideBar({ drawerWidth, open, onClose }: SideBarProps) {
           </ListItem>
         ))}
       </List>
+      <DrawerHandler open={open} onClick={handleDrawerToggle} />
     </Drawer>
   );
 }

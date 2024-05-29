@@ -1,64 +1,33 @@
 ﻿import { styled, useTheme } from "@mui/material/styles";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
 
-interface HeaderProps {
-  drawerWidth: number;
-  drawerOpen: boolean;
-  onClick: () => void;
-}
-interface AppBarProps extends MuiAppBarProps {
-  open?: boolean;
-  drawerWidth: number;
-}
-const AppBar = styled(MuiAppBar, {
-  // shouldForwardProp: Configure which props should be forwarded on DOM
-  shouldForwardProp: (prop) => prop !== "open" && prop !== "drawerWidth",
-  // We are specifying here how the styleOverrides are being applied based on props
-})<AppBarProps>(({ theme, open, drawerWidth }) => ({
+const AppBar = styled(MuiAppBar)<MuiAppBarProps>(({ theme }) => ({
   zIndex: theme.zIndex.drawer + 1,
-  transition: theme.transitions.create(["width", "margin"], {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
+  width: "100%",
   backgroundColor: "white",
   boxShadow: "none",
   borderBottom: `1px solid ${theme.palette.primary.main}`,
-  ...(open && {
-    marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(["width", "margin"], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  }),
 }));
 
-export default function Header({ drawerWidth, drawerOpen, onClick }: HeaderProps) {
-  const theme = useTheme();
-  const handleDrawerOpen = () => {
-    onClick();
-  };
+export default function Header() {
+  // const theme = useTheme();
 
   return (
-    <AppBar position="fixed" drawerWidth={drawerWidth} open={drawerOpen}>
+    <AppBar position="fixed">
       <Toolbar>
-        <IconButton
+        {/* <IconButton
           color="inherit"
           aria-label="open drawer"
-          onClick={handleDrawerOpen}
           edge="start"
           sx={{
             marginRight: 5,
             color: theme.palette.primary.main,
-            ...(drawerOpen && { display: "none" }),
           }}
         >
-          <MenuIcon />
-        </IconButton>
-        <img src="../../public/logo.png" alt="Logo" style={{ height: "43px", marginLeft: "5px" }} />
+          <img src="../../slogo.png" alt="Logo" style={{ height: "45px", marginLeft: "5px" }} />
+        </IconButton> */}
+        <img src="../../blogo3.JPG" alt="Logo" style={{ height: "40px", marginLeft: "0px" }} />
       </Toolbar>
     </AppBar>
   );
