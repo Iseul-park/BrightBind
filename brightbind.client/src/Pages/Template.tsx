@@ -7,13 +7,15 @@ import AuthorizeView from "../Components/AuthorizeView.tsx";
 
 export default function Template() {
   // it returns entire layout of the page, containing side bar and app bar
+  const headerHeight = 70;
+
   return (
     <AuthorizeView>
-      <Box sx={{ display: "flex" }}>
+      <Box sx={{ display: "flex", backgroundColor: "#f0f0f0" }}>
         <CssBaseline />
-        <Header />
-        <SideBar />
-        <Box sx={{ pt: 8, bgcolor: "#fbe9e7" }}>
+        <Header headerHeight={headerHeight} />
+        <SideBar headerHeight={headerHeight} />
+        <Box component="main" sx={{ flexGrow: 1, p: 3, mt: `${headerHeight}px` }}>
           <Outlet />
         </Box>
       </Box>

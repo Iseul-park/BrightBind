@@ -16,20 +16,25 @@ import { Box, Divider } from "@mui/material";
 import LogoutButton from "./LogoutButton.tsx";
 
 const drawerWidth = 210;
-const headerHeight = 60;
 
-const openedMixin = (theme: Theme): CSSObject => ({
+interface DrawerProps {
+  theme: Theme;
+  open: boolean;
+  headerHeight: number;
+}
+
+const openedMixin = (theme: Theme, headerHeight: number): CSSObject => ({
   marginTop: headerHeight,
   width: drawerWidth,
+  borderRight: `1px solid ${theme.palette.primary.main}`,
   transition: theme.transitions.create("width", {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.enteringScreen,
   }),
   overflowX: "hidden",
-  borderRight: `1px solid ${theme.palette.primary.main}`,
 });
 
-const closedMixin = (theme: Theme): CSSObject => ({
+const closedMixin = (theme: Theme, headerHeight: number): CSSObject => ({
   // handle the style of the side bar whtn it's closed
   marginTop: headerHeight,
   transition: theme.transitions.create("width", {
@@ -45,24 +50,28 @@ const closedMixin = (theme: Theme): CSSObject => ({
 });
 
 const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== "open" })(
-  ({ theme, open }: { theme: Theme; open: boolean }) => ({
+  ({ theme, open, headerHeight }: DrawerProps) => ({
     width: drawerWidth,
     flexShrink: 0,
     whiteSpace: "nowrap",
     boxSizing: "border-box",
-    borderRight: `1px solid ${theme.palette.primary.main}`,
+    "&.MuiDrawer-root": { border: "none" },
     ...(open && {
-      ...openedMixin(theme),
-      "& .MuiDrawer-paper": openedMixin(theme),
+      ...openedMixin(theme, headerHeight),
+      "& .MuiDrawer-paper": openedMixin(theme, headerHeight),
     }),
     ...(!open && {
-      ...closedMixin(theme),
-      "& .MuiDrawer-paper": closedMixin(theme),
+      ...closedMixin(theme, headerHeight),
+      "& .MuiDrawer-paper": closedMixin(theme, headerHeight),
     }),
   })
 );
 
-export default function SideBar() {
+interface SideBarProps {
+  headerHeight: number;
+}
+
+export default function SideBar({ headerHeight }: SideBarProps) {
   const theme = useTheme();
   const navigate = useNavigate();
   const [open, setOpen] = useState(true);
@@ -78,7 +87,7 @@ export default function SideBar() {
   ];
 
   return (
-    <Drawer sx={{ display: "flex" }} variant="permanent" open={open} theme={theme}>
+    <Drawer sx={{ display: "flex" }} variant="permanent" open={open} theme={theme} headerHeight={headerHeight}>
       <List>
         {items.map((item) => (
           <ListItem key={item.text} disablePadding sx={{ display: "block" }}>
