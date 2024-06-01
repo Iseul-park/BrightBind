@@ -1,32 +1,21 @@
-﻿import * as React from "react";
-import Box from "@mui/material/Box";
+﻿import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
 import Header from "../Components/template/Header.tsx";
-import MySideBar from "../Components/template/SideBar.tsx";
+import SideBar from "../Components/template/SideBar.tsx";
 import { Outlet } from "react-router-dom";
 import AuthorizeView from "../Components/AuthorizeView.tsx";
 
 export default function Template() {
   // it returns entire layout of the page, containing side bar and app bar
-  const [open, setOpen] = React.useState(true);
-  const drawerWidth = 200;
-
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
+  const headerHeight = 70;
 
   return (
     <AuthorizeView>
-      <Box sx={{ display: "flex" }}>
+      <Box sx={{ display: "flex", backgroundColor: "#f0f0f0" }}>
         <CssBaseline />
-        <Header drawerWidth={drawerWidth} drawerOpen={open} onClick={handleDrawerOpen} />
-        <MySideBar drawerWidth={drawerWidth} open={open} onClose={handleDrawerClose} />
-        <Box sx={{ pt: 8, bgcolor: "#fbe9e7" }}>
-          {/* <DrawerHeader /> */}
+        <Header headerHeight={headerHeight} />
+        <SideBar headerHeight={headerHeight} />
+        <Box component="main" sx={{ flexGrow: 1, p: 3, mt: `${headerHeight}px` }}>
           <Outlet />
         </Box>
       </Box>

@@ -7,7 +7,7 @@ import { Box } from "@mui/material";
 function Home() {
   return (
     <AuthorizeView>
-      <Box sx={{ pl: 10, pr: 10, pt: 8, bgcolor: "#fbe9e7" }}>
+      <Box>
         <span>
           <LogoutLink>Logout</LogoutLink>
         </span>

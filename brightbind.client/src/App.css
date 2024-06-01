@@ -1,4 +1,4 @@
-﻿﻿#root {
+﻿﻿/* #root {
     max-width: 1280px;
     margin: 0 auto;
     padding: 2rem;
@@ -19,9 +19,9 @@ th, td {
 }
 
 .containerbox {
-    border-radius: 10px;
-    box-shadow: 5px 5px 10px gray;
-    background-color: white;
-    padding: 20px;
-    text-align: left;
-}
+  border-radius: 10px;
+  box-shadow: 5px 5px 10px gray;
+  background-color: white;
+  padding: 20px;
+  text-align: left;
+} */
