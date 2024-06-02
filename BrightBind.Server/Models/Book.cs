@@ -28,7 +28,7 @@ namespace BrightBind.Server.Models
 
         // One to Many relationship
         // public ICollection<Review>? Reviews { get; set; }
-        public List<Review> Reviews { get; set; } = new List<Review> { };
+        public List<Review> Reviews { get; set; } 
 
 
     }
