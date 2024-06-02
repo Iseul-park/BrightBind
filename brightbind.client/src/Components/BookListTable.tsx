@@ -64,9 +64,7 @@ const BookListTable = () => {
             enableSorting: false,
             header: "",
             size: 50,
-            Cell: ({ cell }) => (
-              <img src={cell.getValue<string>()} alt="Book image" style={{ width: "100px", height: "auto" }} />
-            ),
+            Cell: ({ cell }) => <img src={cell.getValue<string>()} alt="Book image" style={{ width: "90px" }} />,
           },
           { accessorKey: "title", header: "Title" },
           { accessorKey: "author", header: "Author", size: 20 },
