@@ -16,9 +16,22 @@ namespace BrightBind.Server.Repository
             _context = context;
         }
 
+        public async Task<IEnumerable<Review>> GetReviewsByUserIdAsync(string userId)
+        {
+            return await _context.Reviews
+                .Include(r => r.Book)
+                .Where(r => r.Book.UserId == userId)
+                .ToListAsync();
+        }
+
         public async Task<Review?> GetReviewByIdAsync(int id)
         {
-            return await _context.Reviews.FindAsync(id);
+            // return await _context.Reviews.FindAsync(id);
+            
+            return await _context.Reviews
+                        .Include(r => r.Book)
+                        .FirstOrDefaultAsync(r => r.Id == id);
+
         }
 
         public async Task<List<Review>?> GetReviewsByBookIdAsync(int book_id)
