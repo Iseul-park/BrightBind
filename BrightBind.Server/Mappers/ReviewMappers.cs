@@ -23,7 +23,8 @@ namespace BrightBind.Server.Mappers
                     StartDate = reviewModel.Book.StartDate,
                     EndDate = reviewModel.Book.EndDate,
                     IsComplete = reviewModel.Book.IsComplete,
-                    IsWishList = reviewModel.Book.IsWishList
+                    IsWishList = reviewModel.Book.IsWishList,
+                    UserId = reviewModel.Book.UserId,
                 }
             };
         }
@@ -35,7 +36,6 @@ namespace BrightBind.Server.Mappers
                 Id = reviewModel.Id,
                 Title = reviewModel.Title,
                 Comment = reviewModel.Comment,
-                CreateDate = reviewModel.CreateDate,
                 UpdateDate = reviewModel.UpdateDate,
             };
         }
@@ -46,7 +46,8 @@ namespace BrightBind.Server.Mappers
             {
                 Title = review.Title,
                 Comment = review.Comment,
-                UpdateDate = review.UpdateDate
+                CreateDate = review.CreateDate,
+                UpdateDate = review.UpdateDate,
             };
         }
     }

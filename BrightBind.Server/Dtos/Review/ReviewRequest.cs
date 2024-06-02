@@ -4,7 +4,8 @@
     {
         public string Title { get; set; } = string.Empty;
         public string Comment { get; set; } = string.Empty;
-        //public DateTime CreateDate { get; set; } = DateTime.Now;
-        public DateTime UpdateDate { get; set; }
+        
+        public DateTime CreateDate { get; set; } = DateTime.Now;
+        public DateTime UpdateDate { get; set; } = DateTime.Now;
     }
 }

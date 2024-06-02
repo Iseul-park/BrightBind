@@ -13,6 +13,8 @@
         public bool IsComplete { get; set; }
         public bool IsWishList { get; set; }
 
+        public string UserId { get; set; }
+
         //public List<ReviewDto> Reviews { get; set; }
 
     }
