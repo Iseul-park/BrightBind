@@ -1,11 +1,21 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import {
+  TextField,
+  Button,
+  Checkbox,
+  FormControlLabel,
+  Typography,
+  Container,
+  Box,
+  Alert,
+} from "@mui/material";
 
 function Login() {
   // state variables for email and passwords
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [rememberme, setRememberme] = useState<boolean>(false);
+  const [rememberMe, setRememberMe] = useState<boolean>(false);
   // state variable for error messages
   const [error, setError] = useState<string>("");
   const navigate = useNavigate();
@@ -15,7 +25,7 @@ function Login() {
     const { name, value } = e.target;
     if (name === "email") setEmail(value);
     if (name === "password") setPassword(value);
-    if (name === "rememberme") setRememberme(e.target.checked);
+    if (name === "rememberMe") setRememberMe(e.target.checked);
   };
 
   const handleRegisterClick = () => {
@@ -34,7 +44,7 @@ function Login() {
       // post data to the /register api
 
       let loginurl = "";
-      if (rememberme == true) loginurl = "/login?useCookies=true";
+      if (rememberMe == true) loginurl = "/login?useCookies=true";
       else loginurl = "/login?useSessionCookies=true";
 
       fetch(loginurl, {
@@ -65,36 +75,65 @@ function Login() {
   };
 
   return (
-    <div className="containerbox">
-      <h3>Login</h3>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label className="forminput" htmlFor="email">
-            Email:
-          </label>
-        </div>
-        <div>
-          <input type="email" id="email" name="email" value={email} onChange={handleChange} />
-        </div>
-        <div>
-          <label htmlFor="password">Password:</label>
-        </div>
-        <div>
-          <input type="password" id="password" name="password" value={password} onChange={handleChange} />
-        </div>
-        <div>
-          <input type="checkbox" id="rememberme" name="rememberme" checked={rememberme} onChange={handleChange} />
-          <span>Remember Me</span>
-        </div>
-        <div>
-          <button type="submit">Login</button>
-        </div>
-        <div>
-          <button onClick={handleRegisterClick}>Register</button>
-        </div>
-      </form>
-      {error && <p className="error">{error}</p>}
-    </div>
+    <Container maxWidth="xs">
+      <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
+        <Typography variant="h4" component="h3" gutterBottom>
+          Login
+        </Typography>
+        <TextField
+          label="Email"
+          variant="outlined"
+          margin="normal"
+          fullWidth
+          id="email"
+          name="email"
+          value={email}
+          onChange={handleChange}
+          type="email"
+          required
+        />
+        <TextField
+          label="Password"
+          variant="outlined"
+          margin="normal"
+          fullWidth
+          id="password"
+          name="password"
+          value={password}
+          onChange={handleChange}
+          type="password"
+          required
+        />
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={rememberMe}
+              onChange={handleChange}
+              name="rememberMe"
+              color="primary"
+            />
+          }
+          label="Remember Me"
+        />
+        <Button type="submit" fullWidth variant="contained" color="primary" sx={{ mt: 2 }}>
+          Login
+        </Button>
+        <Button
+          onClick={handleRegisterClick}
+          fullWidth
+          variant="outlined"
+          color="secondary"
+          sx={{ mt: 2 }}
+        >
+          Register
+        </Button>
+        {error && (
+          <Alert severity="error" sx={{ mt: 2 }}>
+            {error}
+          </Alert>
+        )}
+      </Box>
+    </Container>
   );
 }
 
