@@ -6,10 +6,16 @@ import DeleteIcon from "@mui/icons-material/Delete";
 interface OptionsMenuProps {
   onClick: (event: React.MouseEvent<HTMLElement>) => void;
   onClose: () => void;
+  onDelete: () => void;
   anchor: null | HTMLElement;
 }
 
-const OptionsMenu = ({ anchor, onClick, onClose }: OptionsMenuProps) => {
+const OptionsMenu = ({ anchor, onClick, onClose, onDelete }: OptionsMenuProps) => {
+  const handleDeleteClick = () => {
+    onDelete();
+    onClose();
+  };
+
   return (
     <>
       <IconButton onClick={onClick} sx={{ marginLeft: "auto" }} aria-label="more">
@@ -34,7 +40,7 @@ const OptionsMenu = ({ anchor, onClick, onClose }: OptionsMenuProps) => {
           </ListItemIcon>
           Edit
         </MenuItem>
-        <MenuItem onClick={onClose}>
+        <MenuItem onClick={handleDeleteClick}>
           <ListItemIcon>
             <DeleteIcon />
           </ListItemIcon>

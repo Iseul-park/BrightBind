@@ -80,7 +80,10 @@ function Review() {
       );
     }
     setFilteredReviews(filtered);
-    //setReviewData(filtered);
+  };
+
+  const handleDeleteReview = (deletedId: number) => {
+    setReviewData((prevData) => prevData.filter((review) => review.id !== deletedId));
   };
 
   useEffect(() => {
@@ -125,7 +128,7 @@ function Review() {
     if (isDataLoaded) {
       filterReviews();
     }
-  }, [isDataLoaded, startDate, endDate, sortOrder, searchQuery]);
+  }, [isDataLoaded, startDate, endDate, sortOrder, searchQuery, handleDeleteReview]);
 
   return (
     <Container>
@@ -145,12 +148,14 @@ function Review() {
         {filteredReviews.map((review) => (
           <Grid item md={18} sm={6} key={review.id}>
             <ReviewCard
+              id={review.id}
               title={review.title}
               comment={review.comment}
               updateDate={review.updateDate}
               author={review.author}
               brand={review.brand}
               imagePath={review.imagePath}
+              onDelete={handleDeleteReview}
             />
           </Grid>
         ))}
