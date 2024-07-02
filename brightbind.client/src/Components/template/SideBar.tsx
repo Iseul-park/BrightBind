@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { styled, useTheme, Theme, CSSObject } from "@mui/material/styles";
 import MuiDrawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
@@ -74,6 +74,7 @@ interface SideBarProps {
 export default function SideBar({ headerHeight }: SideBarProps) {
   const theme = useTheme();
   const navigate = useNavigate();
+  const location = useLocation();
   const [open, setOpen] = useState(true);
   const handleDrawerToggle = () => {
     setOpen(!open);
@@ -81,48 +82,52 @@ export default function SideBar({ headerHeight }: SideBarProps) {
 
   const items = [
     { text: "Dashboard", icon: <DashboardIcon />, path: "/" },
-    { text: "Books", icon: <LibraryBooksIcon />, path: "./books" },
-    { text: "Reviews", icon: <ReviewsIcon />, path: "./reviews" },
-    { text: "Activity", icon: <EventNoteIcon />, path: "./activities" },
+    { text: "Books", icon: <LibraryBooksIcon />, path: "/books" },
+    { text: "Reviews", icon: <ReviewsIcon />, path: "/reviews" },
+    { text: "Activity", icon: <EventNoteIcon />, path: "/activities" },
   ];
 
   return (
     <Drawer sx={{ display: "flex" }} variant="permanent" open={open} theme={theme} headerHeight={headerHeight}>
       <List>
-        {items.map((item) => (
-          <ListItem key={item.text} disablePadding sx={{ display: "block" }}>
-            <ListItemButton
-              sx={{
-                p: 0,
-                minHeight: 55,
-                justifyContent: open ? "initial" : "center",
-                px: 4.0,
-                "&:hover": {
-                  backgroundColor: theme.palette.primary.main,
-                  //borderRadius: "15px",
-                  //boxShadow: "0px 4px 12px rgba(0, 0.1, 0, 0.2)",
-                  // transform: "scale(1.1)",
-                  "& .MuiListItemIcon-root, & .MuiListItemText-primary": {
-                    color: theme.palette.primary.contrastText,
-                  },
-                },
-              }}
-              onClick={() => navigate(item.path)}
-            >
-              <ListItemIcon
+        {items.map((item) => {
+          const isActive = location.pathname === item.path;
+          return (
+            <ListItem key={item.text} disablePadding sx={{ display: "block" }}>
+              <ListItemButton
                 sx={{
-                  minWidth: 0,
-                  mr: open ? 1 : "auto",
-                  justifyContent: "center",
-                  color: theme.palette.primary.main,
+                  p: 0,
+                  minHeight: 55,
+                  justifyContent: open ? "initial" : "center",
+                  px: 4.0,
+                  backgroundColor: isActive ? theme.palette.primary.main : "inherit",
+                  "& .MuiListItemIcon-root, & .MuiListItemText-primary": {
+                    color: isActive ? theme.palette.primary.contrastText : theme.palette.primary.main,
+                  },
+                  "&:hover": {
+                    backgroundColor: theme.palette.primary.main,
+                    "& .MuiListItemIcon-root, & .MuiListItemText-primary": {
+                      color: theme.palette.primary.contrastText,
+                    },
+                  },
                 }}
+                onClick={() => navigate(item.path)}
               >
-                {item.icon}
-              </ListItemIcon>
-              <ListItemText primary={item.text} sx={{ opacity: open ? 1 : 0, color: theme.palette.primary.dark }} />
-            </ListItemButton>
-          </ListItem>
-        ))}
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 1 : "auto",
+                    justifyContent: "center",
+                    color: isActive ? theme.palette.primary.contrastText : theme.palette.primary.main,
+                  }}
+                >
+                  {item.icon}
+                </ListItemIcon>
+                <ListItemText primary={item.text} sx={{ opacity: open ? 1 : 0, color: theme.palette.primary.dark }} />
+              </ListItemButton>
+            </ListItem>
+          );
+        })}
       </List>
       <DrawerHandler open={open} onClick={handleDrawerToggle} />
       <Box mt="10">
