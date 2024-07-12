@@ -11,6 +11,7 @@ import { Edit, Delete } from "@mui/icons-material";
 import { Box, Container } from "@mui/material";
 import NotesIcon from "@mui/icons-material/Notes";
 import ConfirmModal from "./ConfirmModal";
+import EditBookForm from "./EditBookForm";
 
 type Book = {
   id: number;
@@ -30,9 +31,11 @@ const BookListTable = () => {
   const [bookData, setBookData] = useState<Book[]>([]);
   //const [error, setError] = useState<string | null>(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showEditBookModal, setShowEditBookModal] = useState(false);
   const [selectedBookId, setSelectedBookId] = useState<number | null>(null);
-  const apiUrl = `${BaseURL}/api/Book/GetAllBooks`;
+  const [selectedBook, setSelectedBook] = useState<Book | null>(null);
 
+  const apiUrl = `${BaseURL}/api/Book/GetAllBooks`;
   const user = useContext(UserContext);
   console.log("user1: ", user);
 
@@ -114,6 +117,37 @@ const BookListTable = () => {
     }
   };
 
+  const openEditBookModal = () => {
+    console.log("clicked?");
+    //setSelectedBook(book);
+    // setEditMode(true);
+    setShowEditBookModal(true);
+  };
+
+  const handleEditSave = async (updatedBook: Book) => {
+    try {
+      const updateUrl = `${BaseURL}/api/Book/UpdateBook/${updatedBook.id}`;
+      const response = await fetch(updateUrl, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedBook),
+      });
+
+      if (response.ok) {
+        setBookData((prevBookData) => prevBookData.map((book) => (book.id === updatedBook.id ? updatedBook : book)));
+        // setEditMode(false);
+        setSelectedBook(null);
+        setShowEditBookModal(false);
+      } else {
+        throw new Error("Failed to update book");
+      }
+    } catch (error) {
+      console.error("Error updating book:", error);
+    }
+  };
+
   const table = useMaterialReactTable({
     columns: useMemo(() => columns, [columns]),
     data: useMemo(() => bookData, [bookData]),
@@ -128,8 +162,18 @@ const BookListTable = () => {
         },
       },
     },
-    renderRowActionMenuItems: ({ row, table }) => [
-      <MRT_ActionMenuItem icon={<Edit />} key="edit" label="Edit" onClick={() => console.info("Edit")} table={table} />,
+    renderRowActionMenuItems: ({ closeMenu, row, table }) => [
+      <MRT_ActionMenuItem
+        icon={<Edit />}
+        key="edit"
+        label="Edit"
+        onClick={() => {
+          setSelectedBook(row.original);
+          openEditBookModal();
+          closeMenu();
+        }}
+        table={table}
+      />,
       <MRT_ActionMenuItem
         icon={<Delete />}
         key="delete"
@@ -140,6 +184,7 @@ const BookListTable = () => {
         onClick={() => {
           setSelectedBookId(row.original.id);
           openModal();
+          closeMenu();
         }}
       />,
       <MRT_ActionMenuItem
@@ -150,19 +195,6 @@ const BookListTable = () => {
         table={table}
       />,
     ],
-
-    // muiTablePaperProps: {
-    //   elevation: 0,
-    //   sx: {
-    //     borderRadius: "10",
-    //   },
-    // },
-    // muiTableHeadCellProps: ({ column }) => ({
-    //   //conditionally style pinned columns
-    //   sx: {
-    //     backgroundColor: column.getIsPinned() ? "#f5f5f5" : "inherit",
-    //   },
-    // }),
     muiTableBodyProps: {
       sx: {
         //stripe the rows, make odd rows a darker color
@@ -171,10 +203,6 @@ const BookListTable = () => {
         },
       },
     },
-    // mrtTheme: (theme) => ({
-    //   baseBackgroundColor: "#fff8e1",
-    //   draggingBorderColor: theme.palette.secondary.main,
-    // }),
   });
 
   return (
@@ -192,6 +220,22 @@ const BookListTable = () => {
           open={showDeleteModal}
           onConfirm={handleDeleteConfirm}
           onClose={handleClose}
+        />
+      )}
+
+      {selectedBook && showEditBookModal && (
+        <EditBookForm
+          id={selectedBook.id}
+          title={selectedBook.title}
+          author={selectedBook.author}
+          brand={selectedBook.brand}
+          totalPage={selectedBook.totalPage}
+          imageURL={selectedBook.imagePath}
+          startDate={selectedBook.startDate}
+          endDate={selectedBook.endDate}
+          onSave={handleEditSave}
+          open={showEditBookModal}
+          onClose={() => setShowEditBookModal(false)}
         />
       )}
     </>
